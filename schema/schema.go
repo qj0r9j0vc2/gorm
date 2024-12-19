@@ -130,12 +130,12 @@ func ParseWithSpecialTableName(dest interface{}, cacheStore *sync.Map, namer Nam
 	}
 	modelType := reflect.Indirect(value).Type()
 
-	if modelType.Kind() == reflect.Interface {
-		modelType = reflect.Indirect(reflect.ValueOf(dest)).Elem().Type()
-	}
-
 	for modelType.Kind() == reflect.Slice || modelType.Kind() == reflect.Array || modelType.Kind() == reflect.Ptr {
 		modelType = modelType.Elem()
+	}
+
+	if modelType.Kind() == reflect.Interface {
+		modelType = reflect.Indirect(reflect.ValueOf(dest)).Elem().Type()
 	}
 
 	if modelType.Kind() != reflect.Struct {
